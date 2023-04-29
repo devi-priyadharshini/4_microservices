@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+# information about the deployment
+metadata:
+  name: platformsvc-depl
+# specification about the resources/entities in the deployment
+spec:
+  template:
+    metadata:
+      name: platformsvc-pod-defn
+      #labels - dictionary of kvp users can attach to the kubernetes object to refer later
+      labels:
+        app: platformsvc
+    spec:
+      containers:
+        - name: platformsvc
+          image: devithavamani/platform_svc:latest
+  replicas: 1
+  selector:
+    matchLabels:
+      app: platformsvc
+
