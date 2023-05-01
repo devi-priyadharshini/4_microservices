@@ -19,4 +19,17 @@ spec:
   selector:
     matchLabels:
       app: platformsvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: platformsvc-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: platformsvc
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
 
