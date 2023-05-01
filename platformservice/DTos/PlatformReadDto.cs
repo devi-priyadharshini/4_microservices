@@ -1,4 +1,4 @@
-class PlatformReadDto
+public class PlatformReadDto
 {
     public string Name { get; set; } = string.Empty;
 
