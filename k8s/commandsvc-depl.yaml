@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commandservice-depl
+spec:
+  selector:
+    matchLabels:
+      app: commandservice
+  template:
+    metadata:
+      name: commandservice-pod
+      labels:
+        app: commandservice
+    spec:
+      containers:
+        - name: commandsvc
+          image: devithavamani/commandservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: commandsvc-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: commandservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
