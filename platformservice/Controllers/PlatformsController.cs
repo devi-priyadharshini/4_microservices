@@ -9,10 +9,17 @@ public class PlatformsController : ControllerBase
     private readonly IPlatformRepo _platformsRepo;
     private readonly IMapper _autoMapper;
 
-    public PlatformsController(IPlatformRepo platformsRepo, IMapper autoMapper)
+    private readonly ICmdServiceHttpClient _cmdSvcHttpClient;
+
+    public PlatformsController(
+        IPlatformRepo platformsRepo,
+        IMapper autoMapper,
+        ICmdServiceHttpClient cmdServiceHttpClient
+        )
     {
         _platformsRepo = platformsRepo;
         _autoMapper = autoMapper;
+        _cmdSvcHttpClient = cmdServiceHttpClient;
     }
 
     [HttpGet]
@@ -39,10 +46,12 @@ public class PlatformsController : ControllerBase
         if(newPlatformDto == null)
             return BadRequest("New Platform cannot be null");
 
-        var newPlatform =_autoMapper.Map<Platform>(newPlatformDto);
-        _platformsRepo.CreatePlatform(newPlatform);
+        var newPlatformModel =_autoMapper.Map<Platform>(newPlatformDto);
+        _platformsRepo.CreatePlatform(newPlatformModel);
         _platformsRepo.SaveChanges();
 
-        return CreatedAtRoute(nameof(GetPlatformById), new {guid = newPlatform.Id}, _autoMapper.Map<PlatformReadDto>(newPlatform));
+        var platformReadDto = _autoMapper.Map<PlatformReadDto>(newPlatformModel);
+        _cmdSvcHttpClient.SendNewPlatformAsync(platformReadDto);
+        return CreatedAtRoute(nameof(GetPlatformById), new {guid = platformReadDto.Id}, platformReadDto);
     }
 }
