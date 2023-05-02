@@ -17,7 +17,6 @@ public class CmdServiceHttpClient : ICmdServiceHttpClient
 
     public async Task SendNewPlatformAsync(PlatformReadDto newPlatform)
     {
-        Console.WriteLine("Send HTTP Post msg to command service");
         var httpContent = new StringContent(
             JsonSerializer.Serialize(newPlatform),
             Encoding.UTF8,
