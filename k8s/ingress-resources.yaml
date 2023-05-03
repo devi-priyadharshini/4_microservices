@@ -22,3 +22,11 @@ spec:
                 name: platformsvc-clusterip
                 port:
                    number: 80
+          - pathType: Prefix
+            path: /api/cmdsvc/platform
+            backend:
+              service:
+                name: commandsvc-clusterip
+                port:
+                  number: 80
+            
