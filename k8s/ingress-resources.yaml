@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-resources
+  # annotations are similar to labels descibes information using key: value pair
+  # The diff between labels and annotatios, annotations does not participate in any filtering or querying 
+  # but label does    
+      # annotations:
+      #   kubernetes.io/ingress.class: nginx
+      #   nginx.ingress.kuberenetes.io/use-regex: 'true'
+  # latest k8s supports ngixclassname instead of above annotations.
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: www.platforms.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/platforms
+            backend:
+              service:
+                name: platformsvc-clusterip
+                port:
+                   number: 80
